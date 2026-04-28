@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>NEON KICKS | Tênis que brilham na pista e na quebrada</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 20% 30%, #0a0a0a, #000000);
+            color: #f0f0f0;
+            padding: 2rem 1.5rem;
+        }
+
+        /* header neon vibe */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+            padding-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #00ffff, #ff00cc);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 8px rgba(0,255,255,0.3);
+        }
+
+        .sub {
+            color: #aaa;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        /* grid de tênis */
+        .produtos {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(20, 20, 30, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            border-color: #0ff;
+            box-shadow: 0 0 18px rgba(0, 255, 255, 0.3);
+        }
+
+        .card img {
+            width: 100%;
+            border-radius: 1.2rem;
+            background: #111;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 1px solid #2a2a2a;
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .preco {
+            font-size: 1.7rem;
+            font-weight: 800;
+            color: #0ff;
+            margin: 0.5rem 0;
+            letter-spacing: -0.5px;
+        }
+
+        .parcelamento {
+            font-size: 0.75rem;
+            color: #aaa;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background: linear-gradient(95deg, #00c3ff, #ff00cc);
+            border: none;
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 2rem;
+            font-weight: bold;
+            font-size: 1rem;
+            color: #000;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+
+        button:hover {
+            transform: scale(0.97);
+            filter: brightness(1.05);
+            box-shadow: 0 0 12px #0ff;
+        }
+
+        /* carrinho lateral */
+        .carrinho-lateral {
+            position: fixed;
+            right: 1.5rem;
+            top: 2rem;
+            width: 300px;
+            background: #0c0c12e6;
+            backdrop-filter: blur(16px);
+            border-radius: 1.5rem;
+            padding: 1rem;
+            border: 1px solid #0ff3;
+            z-index: 100;
+            box-shadow: 0 8px 28px black;
+        }
+
+        .carrinho-lateral h3 {
+            font-size: 1.2rem;
+            border-left: 4px solid #0ff;
+            padding-left: 0.7rem;
+            margin-bottom: 1rem;
+        }
+
+        #lista-carrinho {
+            list-style: none;
+            max-height: 280px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+
+        #lista-carrinho li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #2a2a2a;
+            font-size: 0.85rem;
+        }
+
+        .total-carrinho {
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-align: right;
+            border-top: 1px solid cyan;
+            padding-top: 0.7rem;
+            margin-top: 0.4rem;
+        }
+
+        .btn-finalizar {
+            background: #0ff;
+            color: #000;
+            margin-top: 0.8rem;
+            font-weight: bold;
+        }
+
+        .remover-item {
+            background: #ff3366;
+            border: none;
+            color: white;
+            padding: 0.1rem 0.5rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            cursor: pointer;
+            width: auto;
+        }
+
+        @media (max-width: 800px) {
+            .carrinho-lateral {
+                position: relative;
+                width: 100%;
+                right: 0;
+                margin-top: 2rem;
+                top: 0;
+            }
+            body {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>⚡ NEON KICKS</h1>
+    <div class="sub">pisada futurista • estilo de invasão</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
+    <div style="flex: 3; min-width: 260px;">
+        <div class="produtos" id="lista-produtos"></div>
+    </div>
+    <div style="flex: 1.2; min-width: 260px;">
+        <div class="carrinho-lateral">
+            <h3>🛒 seu drop</h3>
+            <ul id="lista-carrinho">
+                <li style="color:#888;">carrinho vazio</li>
+            </ul>
+            <div class="total-carrinho">
+                total: R$ <span id="total-valor">0</span>
+            </div>
+            <button class="btn-finalizar" id="finalizar-compra">🔥 FINALIZAR PEDIDO</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Catálogo brabo de tênis
+    const produtos = [
+        { id: 1, nome: "NEO CYBER", preco: 499, imagem: "https://placehold.co/400x400/111/0ff?text=Neo+Cyber", parcela: "6x R$83,17" },
+        { id: 2, nome: "ORBIT RUNNER", preco: 599, imagem: "https://placehold.co/400x400/222/ff44cc?text=Orbit+Runner", parcela: "6x R$99,83" },
+        { id: 3, nome: "GHOST EDITION", preco: 799, imagem: "https://placehold.co/400x400/1a1a2e/cyan?text=Ghost+Ed", parcela: "8x R$99,87" },
+        { id: 4, nome: "ZENITH LOW", preco: 349, imagem: "https://placehold.co/400x400/2a2a2a/white?text=Zenith+Low", parcela: "4x R$87,25" },
+        { id: 5, nome: "PHANTOM PRO", preco: 899, imagem: "https://placehold.co/400x400/0a0a1a/magenta?text=Phantom+Pro", parcela: "10x R$89,90" },
+        { id: 6, nome: "BYBOT SIGNATURE", preco: 1299, imagem: "https://placehold.co/400x400/000/cyan?text=ByBot+++", parcela: "12x R$108,25" }
+    ];
+
+    let carrinho = [];
+
+    // renderizar produtos na tela
+    function renderizarProdutos() {
+        const container = document.getElementById("lista-produtos");
+        container.innerHTML = "";
+        produtos.forEach(prod => {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+                <img src="${prod.imagem}" alt="${prod.nome}">
+                <h3>${prod.nome}</h3>
+                <div class="preco">R$ ${prod.preco.toFixed(2)}</div>
+                <div class="parcelamento">${prod.parcela}</div>
+                <button data-id="${prod.id}">ADICIONAR AO CRIPTO-CARRINHO</button>
+            `;
+            container.appendChild(card);
+        });
+
+        // adicionar eventos aos botoes de add
+        document.querySelectorAll(".card button").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const idProduto = parseInt(btn.getAttribute("data-id"));
+                const produtoEncontrado = produtos.find(p => p.id === idProduto);
+                if(produtoEncontrado) {
+                    adicionarAoCarrinho(produtoEncontrado);
+                }
+            });
+        });
+    }
+
+    function adicionarAoCarrinho(produto) {
+        const existente = carrinho.find(item => item.id === produto.id);
+        if(existente) {
+            existente.quantidade++;
+        } else {
+            carrinho.push({
+                id: produto.id,
+                nome: produto.nome,
+                preco: produto.preco,
+                quantidade: 1
+            });
+        }
+        atualizarCarrinhoUI();
+        darFeedbackNeon("➕ " + produto.nome + " adicionado");
+    }
+
+    function removerItemCarrinho(idProduto) {
+        const index = carrinho.findIndex(item => item.id === idProduto);
+        if(index !== -1) {
+            if(carrinho[index].quantidade > 1) {
+                carrinho[index].quantidade--;
+            } else {
+                carrinho.splice(index, 1);
+            }
+        }
+        atualizarCarrinhoUI();
+        darFeedbackNeon("❌ item removido");
+    }
+
+    function atualizarCarrinhoUI() {
+        const listaEl = document.getElementById("lista-carrinho");
+        const totalSpan = document.getElementById("total-valor");
+
+        if(carrinho.length === 0) {
+            listaEl.innerHTML = '<li style="color:#888;">carrinho vazio</li>';
+            totalSpan.innerText = "0";
+            return;
+        }
+
+        listaEl.innerHTML = "";
+        let total = 0;
+
+        carrinho.forEach(item => {
+            total += item.preco * item.quantidade;
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <span><strong>${item.nome}</strong> (${item.quantidade}x) <br> <span style="font-size:0.7rem;">R$ ${(item.preco * item.quantidade).toFixed(2)}</span></span>
+                <button class="remover-item" data-id="${item.id}">🗑️</button>
+            `;
+            listaEl.appendChild(li);
+        });
+
+        totalSpan.innerText = total.toFixed(2);
+
+        // adicionar eventos de remover
+        document.querySelectorAll(".remover-item").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const id = parseInt(btn.getAttribute("data-id"));
+                removerItemCarrinho(id);
+            });
+        });
+    }
+
+    function darFeedbackNeon(mensagem) {
+        // efeito visual simples mas chamativo
+        const toast = document.createElement("div");
+        toast.innerText = mensagem;
+        toast.style.position = "fixed";
+        toast.style.bottom = "20px";
+        toast.style.left = "20px";
+        toast.style.backgroundColor = "#0ff";
+        toast.style.color = "#000";
+        toast.style.padding = "10px 20px";
+        toast.style.borderRadius = "40px";
+        toast.style.fontWeight = "bold";
+        toast.style.zIndex = "999";
+        toast.style.boxShadow = "0 0 12px cyan";
+        toast.style.fontSize = "0.9rem";
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 1800);
+    }
+
+    // finalizar compra
+    function finalizarCompra() {
+        if(carrinho.length === 0) {
+            alert("❌ nada no carrinho, patrão. bora escolher um tênis daora.");
+            return;
+        }
+        const totalFinal = carrinho.reduce((acc, item) => acc + (item.preco * item.quantidade), 0);
+        alert(`🔥 PEDIDO FINALIZADO 🔥\nTotal: R$ ${totalFinal.toFixed(2)}\n\nMétodo: Pix / Crypto / Cartão\nObrigado por comprar na NEON KICKS, em breve rastreio via darkmail.`);
+        carrinho = [];
+        atualizarCarrinhoUI();
+        darFeedbackNeon("✅ Pedido enviado! sucesso total");
+    }
+
+    // eventos principais
+    document.getElementById("finalizar-compra").addEventListener("click", finalizarCompra);
+
+    // init
+    renderizarProdutos();
+    atualizarCarrinhoUI();
+</script>
+
+</body>
+</html>
